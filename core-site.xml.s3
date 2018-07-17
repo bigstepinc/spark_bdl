@@ -1,0 +1,26 @@
+<configuration>
+<property>
+  <name>fs.s3a.impl</name>
+  <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+</property>
+<property>
+  <name>fs.s3a.access.key</name>
+  <value>ACCESSKEY</value>
+</property>
+<property>
+  <name>fs.s3a.secret.key</name>
+  <value>SECRETKEY</value>
+</property>
+<property>
+  <name>fs.s3a.endpoint</name>
+  <value>https://object.ecstestdrive.com</value>
+</property>
+<property>
+  <name>fs.s3a.connection.ssl.enabled</name>
+  <value>enabled</value>
+</property>
+<property>
+  <name>fs.s3a.signing-algorithm</name>
+  <value>S3SignerType</value>
+</property>
+</configuration>

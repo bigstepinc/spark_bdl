@@ -38,7 +38,7 @@ RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_181/jre/lib/sec
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.3.0
-RUN cd /opt && wget http://apache.javapipe.com/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz && \
+RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz && \
    tar xzvf /opt/spark-2.3.0-bin-hadoop2.7.tgz && \
    rm  /opt/spark-2.3.0-bin-hadoop2.7.tgz 
 

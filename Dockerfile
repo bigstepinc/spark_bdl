@@ -7,6 +7,8 @@ ADD entrypoint.sh /
 # ADD handlers.py /opt/
 
 ADD core-site.xml.datalake /opt/spark-2.3.0-bin-hadoop2.7/conf/
+ADD core-site.xml.s3 /opt/spark-2.3.0-bin-hadoop2.7/conf/
+ADD core-site.xml.gcs /opt/spark-2.3.0-bin-hadoop2.7/conf/
 # ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf
 # ADD hive-site.xml /opt/spark-2.3.0-bin-hadoop2.7/conf/

@@ -26,6 +26,34 @@ if [ "$ENV" == "gcs" ]; then
 	mv $SPARK_HOME/conf/core-site.xml.gcs $SPARK_HOME/conf/core-site.xml
 fi
 
+#Configure Google Cloud Platform connection details 
+
+if [ "$JSON_KEY_FILE" != "" ]; then
+	sed "s/JSON_KEY_FILE/$JSON_KEY_FILE/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+fi
+
+if [ "$GCP_PROJECT_ID" != "" ]; then
+	sed "s/GCP_PROJECT_ID/$GCP_PROJECT_ID/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+fi
+
+#Configure AWS connection details
+if [ "$ACCESSKEY" != "" ]; then
+	sed "s/ACCESSKEY/$ACCESSKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+fi
+
+if [ "$SECRETKEY" != "" ]; then
+	sed "s/SECRETKEY/$SECRETKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+fi
+
+if [ "$S3_ENDPOINT" != "" ]; then
+	sed "s/S3_ENDPOINT/$S3_ENDPOINT/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+fi
+
 if [ "$SPARK_MASTER_PORT" == "" ]; then
   SPARK_MASTER_PORT=7077
 fi
@@ -128,26 +156,6 @@ fi
 
 export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"
 
-if [ "$DYNAMIC_PARTITION_VALUE" != "" ]; then
-	sed "s/DYNAMIC_PARTITION_VALUE/$DYNAMIC_PARTITION_VALUE/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
-	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
-fi
-
-if [ "$DYNAMIC_PARTITION_MODE" != "" ]; then
-	sed "s/DYNAMIC_PARTITION_MODE/$DYNAMIC_PARTITION_MODE/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
-	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
-fi
-
-if [ "$NR_MAX_DYNAMIC_PARTITIONS" != "" ]; then
-	sed "s/NR_MAX_DYNAMIC_PARTITIONS/$NR_MAX_DYNAMIC_PARTITIONS/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
-	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
-fi
-
-if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" != "" ]; then
-	sed "s/MAX_DYNAMIC_PARTITIONS_PER_NODE/$MAX_DYNAMIC_PARTITIONS_PER_NODE/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
-	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
-fi
-
 if [ "$EX_MEM" != "" ]; then
 	sed "s/EX_MEM/$EX_MEM/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
 	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
@@ -184,20 +192,6 @@ if [ "$SPARK_HEARTBEAT" != "" ]; then
 	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 fi
 
-if [ "$MODE" == "master" ]; then 
-	#Install sparkmonitor extension
-	export SPARKMONITOR_UI_HOST=$SPARK_PUBLIC_DNS
-	export SPARKMONITOR_UI_PORT=$SPARK_UI_PORT
-
-	pip install https://github.com/krishnan-r/sparkmonitor/releases/download/v0.0.1/sparkmonitor.tar.gz #Use latest version as in github releases
-
-	jupyter nbextension install sparkmonitor --py --user --symlink 
-	jupyter nbextension enable sparkmonitor --py --user            
-	jupyter serverextension enable --py --user sparkmonitor
-
-	#ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor')" >>  $(ipython profile locate default)/ipython_kernel_config.py
-	ipython profile create && echo "c.InteractiveShellApp.extensions.append('sparkmonitor.kernelextension')" >> $(ipython profile locate default)/ipython_kernel_config.py
-fi
 
 if [ "$MODE" == "" ]; then
 MODE=$1

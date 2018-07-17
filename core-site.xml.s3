@@ -13,7 +13,8 @@
 </property>
 <property>
   <name>fs.s3a.endpoint</name>
-  <value>https://object.ecstestdrive.com</value>
+  <!--<value>https://object.ecstestdrive.com</value>-->
+  <value>https://S3_ENDPOINT</value>
 </property>
 <property>
   <name>fs.s3a.connection.ssl.enabled</name>

@@ -1,6 +1,7 @@
 FROM ubuntu:16.04
 
 ADD entrypoint.sh /
+ADD bdl_testing_gcs.json /opt/bdl_testing_gcs.json
 # ADD password.py /opt/
 # ADD version.json /opt/
 # ADD env.sh /opt/

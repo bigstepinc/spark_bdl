@@ -197,7 +197,7 @@ if [ "$MODE" == "" ]; then
 MODE=$1
 fi
 
-CLASSPATH=$SPARK_HOME/jars/
+CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar
 
 if [ "$MODE" == "master" ]; then 
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT 

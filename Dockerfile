@@ -186,7 +186,7 @@ RUN cd /tmp && \
    # export PATH=$PATH:/opt/datalake-1.5-SNAPSHOT/bin
    
 RUN chmod 777 /entrypoint.sh
-RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-latest-hadoop2.jar -O /opt
+RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-latest-hadoop2.jar -O /opt/gcs-connector-latest-hadoop2.jar
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
 

@@ -189,7 +189,8 @@ RUN cd /tmp && \
   #  tar xzvf datalake-1.5-SNAPSHOT-bin.tar.gz && \
   #  rm -rf datalake-1.5-SNAPSHOT-bin.tar.gz && \
    # export PATH=$PATH:/opt/datalake-1.5-SNAPSHOT/bin
-    
+   
+RUN chmod 777 /entrypoint.sh
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
 

@@ -7,6 +7,7 @@ ADD core-site.xml.s3 /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD core-site.xml.gcs /opt/spark-2.3.0-bin-hadoop2.7/conf/
 # ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf
+ADD http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar $SPARK_HOME/jars
 # ADD hive-site.xml /opt/spark-2.3.0-bin-hadoop2.7/conf/
 
 # ADD krb5.conf.integration /etc/

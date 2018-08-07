@@ -1,1 +1,1 @@
-# spark1.6-jupyter4.1
+# Spark 2.3.0 version

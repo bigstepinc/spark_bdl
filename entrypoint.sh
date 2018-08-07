@@ -1,29 +1,29 @@
 #!/bin/bash
 
-SPARK_HOME="/opt/spark-2.3.0-bin-hadoop2.7"
-
-echo Using SPARK_HOME=$SPARK_HOME
-
-. "${SPARK_HOME}/sbin/spark-config.sh"
-
-. "${SPARK_HOME}/bin/load-spark-env.sh"
-
+export SPARK_HOME="/opt/spark-2.3.0-bin-hadoop2.7"
 export JAVA_HOME="/opt/jdk1.8.0_181/"                                                                                                                               
 export PATH="$PATH:/opt/jdk1.8.0_181/bin:/opt/jdk1.8.0_181/jre/bin"
-
 export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
 export HADOOP_CONF_DIR="$SPARK_HOME/conf"
 export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"
 export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"
 
-cp /opt/hadoop/share/hadoop/common/hadoop-common-2.7.5.jar /opt/spark-2.3.0-bin-hadoop2.7/jars/
+echo Using SPARK_HOME=$SPARK_HOME
 
+. "${SPARK_HOME}/sbin/spark-config.sh"
+. "${SPARK_HOME}/bin/load-spark-env.sh"
 
 if [ "$ENV" == "s3" ]; then
 	mv $SPARK_HOME/conf/core-site.xml.s3 $SPARK_HOME/conf/core-site.xml
 fi
 if [ "$ENV" == "gcs" ]; then
 	mv $SPARK_HOME/conf/core-site.xml.gcs $SPARK_HOME/conf/core-site.xml
+fi
+if [ "$ENV" == "bigstep" ]; then
+	mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
+fi
+if [ "$ENV" == "integration" ]; then
+	mv $SPARK_HOME/conf/core-site.xml.datalake.integration $SPARK_HOME/conf/core-site.xml
 fi
 
 #Configure Google Cloud Platform connection details 

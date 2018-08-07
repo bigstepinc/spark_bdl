@@ -7,6 +7,9 @@ export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
 export HADOOP_CONF_DIR="$SPARK_HOME/conf"
 export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"
 export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"
+export CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar
+export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"
+
 
 echo Using SPARK_HOME=$SPARK_HOME
 
@@ -32,7 +35,6 @@ if [ "$JSON_KEY_FILE" != "" ]; then
 	sed "s/JSON_KEY_FILE/$JSON_KEY_FILE/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 fi
-
 if [ "$GCP_PROJECT_ID" != "" ]; then
 	sed "s/GCP_PROJECT_ID/$GCP_PROJECT_ID/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
@@ -43,12 +45,10 @@ if [ "$ACCESSKEY" != "" ]; then
 	sed "s/ACCESSKEY/$ACCESSKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 fi
-
 if [ "$SECRETKEY" != "" ]; then
 	sed "s/SECRETKEY/$SECRETKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 fi
-
 if [ "$S3_ENDPOINT" != "" ]; then
 	sed "s/S3_ENDPOINT/$S3_ENDPOINT/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
@@ -81,6 +81,10 @@ fi
 if [ "$SPARK_MASTER_HOSTNAME" == "" ]; then
   SPARK_MASTER_HOSTNAME=`hostname -f`
 fi
+if [ "$SPARK_HOSTNAME" == "" ]; then
+  SPARK_HOSTNAME=`hostname -f`
+fi
+
 # Setting defaults for spark and Hive parameters -> RPC error
 if [ "$SPARK_NETWORK_TIMEOUT" == "" ]; then
   SPARK_NETWORK_TIMEOUT=120
@@ -106,39 +110,61 @@ fi
 if [ "$NEW_SIZE_JVM" == "" ]; then
 	NEW_SIZE_JVM=1024
 fi
+if [ "$CLEANUP_ENABLED" == "" ]; then
+        CLEANUP_ENABLED=true
+fi
+if [ "$CLEANUP_INTERVAL" == "" ]; then
+        CLEANUP_INTERVAL=3600
+fi
+if [ "$CLEANUP_APPDATA" == "" ]; then
+        CLEANUP_APPDATA=3600
+fi
+if [ "$SPARK_MASTER_URL" == "" ]; then 
+	SPARK_MASTER_URL="spark://$SPARK_MASTER_HOSTNAME:$SPARK_MASTER_PORT"
+	echo "Using SPARK_MASTER_URL=$SPARK_MASTER_URL"
+fi
+if [ "$EX_MEM" != "" ]; then
+	EX_MEM=1g
+fi
+if [ "$EX_CORES" != "" ]; then
+	EX_CORES=1
+fi
+if [ "$DRIVER_MEM" != "" ]; then
+	DRIVER_MEM=1g
+fi
+if [ "$DRIVER_CORES" != "" ]; then
+	DRIVER_CORES=1
+fi
 
 if [ "$LOCAL_DIR" != "" ]; then
 
+	export ESCAPED_LOCAL_DIR="${LOCAL_DIR//\//\\/}"
+	
 	mkdir $LOCAL_DIR
-	mkdir $LOCAL_DIR/$SPARK_PUBLIC_DNS
-	mkdir $LOCAL_DIR/$SPARK_PUBLIC_DNS/logs
-	mkdir $LOCAL_DIR/$SPARK_PUBLIC_DNS/work
-	mkdir $LOCAL_DIR/$SPARK_PUBLIC_DNS/local
+	mkdir $LOCAL_DIR/$SPARK_HOSTNAME
+	mkdir $LOCAL_DIR/$SPARK_HOSTNAME/logs
+	mkdir $LOCAL_DIR/$SPARK_HOSTNAME/work
+	mkdir $LOCAL_DIR/$SPARK_HOSTNAME/local
 	
 	cp $SPARK_HOME/conf/spark-env.sh.template $SPARK_HOME/conf/spark-env.sh
-	echo "SPARK_WORKER_DIR=$LOCAL_DIR/$SPARK_PUBLIC_DNS/work" >> $SPARK_HOME/conf/spark-env.sh
+	echo "SPARK_WORKER_DIR=$LOCAL_DIR/$SPARK_HOSTNAME/work" >> $SPARK_HOME/conf/spark-env.sh
 	
-	sed "s/LOG_DIR/${ESCAPED_LOCAL_DIR}\/$SPARK_PUBLIC_DNS\/logs/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+	sed "s/LOG_DIR/${ESCAPED_LOCAL_DIR}\/$SPARK_HOSTNAME\/logs/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
 	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-	sed "s/LOCAL_DIR/${ESCAPED_LOCAL_DIR}\/$SPARK_PUBLIC_DNS\/local/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+	sed "s/LOCAL_DIR/${ESCAPED_LOCAL_DIR}\/$SPARK_HOSTNAME\/local/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
 	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 fi
 
-if [ "$CLEANUP_ENABLED" != "" ]; then
-	sed "s/CLEANUP_ENABLED/$CLEANUP_ENABLED/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
+sed "s/CLEANUP_ENABLED/$CLEANUP_ENABLED/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-if [ "$CLEANUP_INTERVAL" != "" ]; then
-	sed "s/CLEANUP_INTERVAL/$CLEANUP_INTERVAL/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
+sed "s/CLEANUP_INTERVAL/$CLEANUP_INTERVAL/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-if [ "$CLEANUP_APPDATA" != "" ]; then
-	sed "s/CLEANUP_APPDATA/$CLEANUP_APPDATA/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
+sed "s/CLEANUP_APPDATA/$CLEANUP_APPDATA/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
+
 
 sed "s/HOSTNAME_MASTER/$SPARK_MASTER_HOSTNAME/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
 mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
@@ -149,55 +175,33 @@ mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 sed "s/SPARK_UI_PORT/$SPARK_UI_PORT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
 mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-if [ "$SPARK_MASTER_URL" == "" ]; then 
-	SPARK_MASTER_URL="spark://$SPARK_MASTER_HOSTNAME:$SPARK_MASTER_PORT"
-	echo "Using SPARK_MASTER_URL=$SPARK_MASTER_URL"
-fi
+sed "s/EX_MEM/$EX_MEM/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"
+sed "s/EX_CORES/$EX_CORES/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-if [ "$EX_MEM" != "" ]; then
-	sed "s/EX_MEM/$EX_MEM/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
-if [ "$EX_CORES" != "" ]; then
-	sed "s/EX_CORES/$EX_CORES/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
-if [ "$DRIVER_MEM" != "" ]; then
-	sed "s/DRIVER_MEM/$DRIVER_MEM/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
-if [ "$DRIVER_CORES" != "" ]; then
-	sed "s/DRIVER_CORES/$DRIVER_CORES/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
+sed "s/DRIVER_MEM/$DRIVER_MEM/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-if [ "$SPARK_NETWORK_TIMEOUT" != "" ]; then
-	sed "s/SPARK_NETWORK_TIMEOUT/$SPARK_NETWORK_TIMEOUT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp /$SPARK_HOME/conf/spark-defaults.conf
-fi
-if [ "$SPARK_RPC_TIMEOUT" != "" ]; then
-	sed "s/SPARK_RPC_TIMEOUT/$SPARK_RPC_TIMEOUT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
+sed "s/DRIVER_CORES/$DRIVER_CORES/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
-if [ "$SPARK_RPC_NUM_RETRIES" != "" ]; then
-	sed "s/SPARK_RPC_NUM_RETRIES/$SPARK_RPC_NUM_RETRIES/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
+sed "s/SPARK_NETWORK_TIMEOUT/$SPARK_NETWORK_TIMEOUT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp /$SPARK_HOME/conf/spark-defaults.conf
 
-if [ "$SPARK_HEARTBEAT" != "" ]; then
-	sed "s/SPARK_HEARTBEAT/$SPARK_HEARTBEAT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
+sed "s/SPARK_RPC_TIMEOUT/$SPARK_RPC_TIMEOUT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
+sed "s/SPARK_RPC_NUM_RETRIES/$SPARK_RPC_NUM_RETRIES/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
+
+sed "s/SPARK_HEARTBEAT/$SPARK_HEARTBEAT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
+mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
 if [ "$MODE" == "" ]; then
 MODE=$1
 fi
-
-CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar
 
 if [ "$MODE" == "master" ]; then 
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT 
@@ -207,9 +211,8 @@ elif [ "$MODE" == "worker" ]; then
 
 elif [ "$MODE" == "thrift" ]; then 
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT 
-	#${SPARK_HOME}/bin/spark-submit --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 --name "Thrift JDBC/ODBC Server"  --master $SPARK_MASTER_URL
+	${SPARK_HOME}/bin/spark-submit --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 --name "Thrift JDBC/ODBC Server"  --master $SPARK_MASTER_URL
 else
 	nohup ${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL	-c $CORES -m $MEM -d $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work/ 
-	#jupyter notebook --ip=0.0.0.0 --log-level DEBUG --allow-root --NotebookApp.iopub_data_rate_limit=10000000000 --Spark.url="http://$SPARK_PUBLIC_DNS:$SPARK_UI_PORT"
 fi

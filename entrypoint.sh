@@ -157,8 +157,7 @@ if [ "$LOCAL_DIR" != "" ]; then
 fi
 
 if [ "$SPARK_REVERSE_PROXY_URL" != "" ]; then
-	sed "s/SPARK_REVERSE_PROXY_URL/$SPARK_REVERSE_PROXY_URL/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
-	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
+	echo "spark.ui.reverseProxyUrl=$SPARK_REVERSE_PROXY_URL" >> $SPARK_HOME/conf/spark-defaults.conf
 fi
 
 sed "s/CLEANUP_ENABLED/$CLEANUP_ENABLED/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \

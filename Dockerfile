@@ -7,7 +7,6 @@ ADD core-site.xml.s3 /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD core-site.xml.gcs /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
 ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf
-ADD http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar $SPARK_HOME/jars
 
 ADD krb5.conf.integration /etc/
 ADD krb5.conf /etc/
@@ -36,6 +35,10 @@ RUN rm -rf UnlimitedJCEPolicyJDK8
 RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz && \
    tar xzvf /opt/spark-2.3.0-bin-hadoop2.7.tgz && \
    rm  /opt/spark-2.3.0-bin-hadoop2.7.tgz 
+   
+# Fix guava dependencies for Google
+RUN wget http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar -O $SPARK_HOME/jars/ && 
+      rm $SPARK_HOME/jars/guava-14.0.1.jar
 
 # Spark pointers for Jupyter Notebook
 ENV SPARK_HOME /opt/spark-2.3.0-bin-hadoop2.7

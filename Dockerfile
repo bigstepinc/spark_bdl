@@ -36,16 +36,16 @@ RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-2.3.0/spark-2.3.
    tar xzvf /opt/spark-2.3.0-bin-hadoop2.7.tgz && \
    rm  /opt/spark-2.3.0-bin-hadoop2.7.tgz 
    
-# Fix guava dependencies for Google
-RUN wget http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar -O $SPARK_HOME/jars/ && \
-      rm $SPARK_HOME/jars/guava-14.0.1.jar
-
 # Spark pointers for Jupyter Notebook
 ENV SPARK_HOME /opt/spark-2.3.0-bin-hadoop2.7
 ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/lib/R/library
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip
 
 ENV PATH $PATH:/$SPARK_HOME/bin/
+
+# Fix guava dependencies for Google
+RUN wget http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar -O $SPARK_HOME/jars/ && \
+      rm $SPARK_HOME/jars/guava-14.0.1.jar
 
 #Install Scala Spark kernel
 ENV SBT_VERSION 0.13.11

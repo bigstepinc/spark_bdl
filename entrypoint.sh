@@ -137,6 +137,8 @@ if [ "$DRIVER_CORES" != "" ]; then
 fi
 
 if [ "$LOCAL_DIR" != "" ]; then
+	
+	export NOTEBOOK_DIR=$LOCAL_DIR
 
 	export ESCAPED_LOCAL_DIR="${LOCAL_DIR//\//\\/}"
 	

@@ -16,43 +16,43 @@ echo Using SPARK_HOME=$SPARK_HOME
 . "${SPARK_HOME}/sbin/spark-config.sh"
 . "${SPARK_HOME}/bin/load-spark-env.sh"
 
-if [ "$ENV" == "s3" ]; then
-	mv $SPARK_HOME/conf/core-site.xml.s3 $SPARK_HOME/conf/core-site.xml
-fi
-if [ "$ENV" == "gcs" ]; then
-	mv $SPARK_HOME/conf/core-site.xml.gcs $SPARK_HOME/conf/core-site.xml
-fi
-if [ "$ENV" == "bigstep" ]; then
-	mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
-fi
-if [ "$ENV" == "integration" ]; then
-	mv $SPARK_HOME/conf/core-site.xml.datalake.integration $SPARK_HOME/conf/core-site.xml
-fi
+#if [ "$ENV" == "s3" ]; then
+#	mv $SPARK_HOME/conf/core-site.xml.s3 $SPARK_HOME/conf/core-site.xml
+#fi
+#if [ "$ENV" == "gcs" ]; then
+#	mv $SPARK_HOME/conf/core-site.xml.gcs $SPARK_HOME/conf/core-site.xml
+#fi
+#if [ "$ENV" == "bigstep" ]; then
+#	mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
+#fi
+#if [ "$ENV" == "integration" ]; then
+#	mv $SPARK_HOME/conf/core-site.xml.datalake.integration $SPARK_HOME/conf/core-site.xml
+#fi
 
 #Configure Google Cloud Platform connection details 
 
-if [ "$JSON_KEY_FILE" != "" ]; then
-	sed "s/JSON_KEY_FILE/$JSON_KEY_FILE/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-fi
-if [ "$GCP_PROJECT_ID" != "" ]; then
-	sed "s/GCP_PROJECT_ID/$GCP_PROJECT_ID/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-fi
+#if [ "$JSON_KEY_FILE" != "" ]; then
+##	sed "s/JSON_KEY_FILE/$JSON_KEY_FILE/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \#
+#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+#fi
+#if [ "$GCP_PROJECT_ID" != "" ]; then#
+#	sed "s/GCP_PROJECT_ID/$GCP_PROJECT_ID/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \#
+#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+#fi
 
 #Configure AWS connection details
-if [ "$ACCESSKEY" != "" ]; then
-	sed "s/ACCESSKEY/$ACCESSKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-fi
-if [ "$SECRETKEY" != "" ]; then
-	sed "s/SECRETKEY/$SECRETKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-fi
-if [ "$S3_ENDPOINT" != "" ]; then
-	sed "s/S3_ENDPOINT/$S3_ENDPOINT/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-fi
+#if [ "$ACCESSKEY" != "" ]; then
+#	sed "s/ACCESSKEY/$ACCESSKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+#fi
+#if [ "$SECRETKEY" != "" ]; then
+#	sed "s/SECRETKEY/$SECRETKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+#fi
+#if [ "$S3_ENDPOINT" != "" ]; then
+#	sed "s/S3_ENDPOINT/$S3_ENDPOINT/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+#fi
 
 if [ "$SPARK_MASTER_PORT" == "" ]; then
   SPARK_MASTER_PORT=7077
@@ -139,6 +139,31 @@ if [ "$DRIVER_CORES" != "" ]; then
 	DRIVER_CORES=1
 fi
 
+#Configure core-site.xml based on the configured authentication method
+
+if [ "$AUTH_METHOD" == "basic" ]; then
+	mv $SPARK_HOME/conf/core-site.xml.basic $SPARK_HOME/conf/core-site.xml
+	if [ "$OBJ_STORAGE_USERNAME" != "" ]; then
+		sed "s/OBJ_STORAGE_USERNAME/$OBJ_STORAGE_USERNAME" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+	fi
+	if [ "$OBJ_STORAGE_PASSWORD" != "" ]; then
+		sed "s/OBJ_STORAGE_PASSWORD/$OBJ_STORAGE_PASSWORD" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+	fi
+fi 
+if [ "$AUTH_METHOD" == "apikey" ]; then
+	mv $SPARK_HOME/conf/core-site.xml.apiKey $SPARK_HOME/conf/core-site.xml
+	if [ "$AUTH_APIKEY" != "" ]; then
+		sed "s/AUTH_APIKEY/$AUTH_APIKEY" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+	fi
+fi
+if [ "$SET_PATH_TO_CONF_FOLDER" != "" ]; then
+		sed "s/SET_PATH_TO_CONF_FOLDER/$SET_PATH_TO_CONF_FOLDER" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+fi
+
 if [ "$LOCAL_DIR" != "" ]; then
 	
 	export NOTEBOOK_DIR=$LOCAL_DIR
@@ -158,10 +183,6 @@ if [ "$LOCAL_DIR" != "" ]; then
 
 	sed "s/LOCAL_DIR/${ESCAPED_LOCAL_DIR}\/$SPARK_HOSTNAME\/local/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
 	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
-fi
-
-if [ "$SPARK_REVERSE_PROXY_URL" != "" ]; then
-	echo "spark.ui.reverseProxyUrl=$SPARK_REVERSE_PROXY_URL" >> $SPARK_HOME/conf/spark-defaults.conf
 fi
 
 sed "s/CLEANUP_ENABLED/$CLEANUP_ENABLED/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \

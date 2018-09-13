@@ -44,7 +44,7 @@ ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip
 ENV PATH $PATH:/$SPARK_HOME/bin/
 
 # Fix guava dependencies for Google
-RUN wget http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar -O $SPARK_HOME/jars/ && \
+RUN wget http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar -O $SPARK_HOME/jars/guava-23.0.jar && \
       rm $SPARK_HOME/jars/guava-14.0.1.jar
 
 #Install Scala Spark kernel

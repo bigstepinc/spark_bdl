@@ -2,11 +2,10 @@ FROM ubuntu:16.04
 
 ADD entrypoint.sh /
 
-ADD core-site.xml.datalake /opt/spark-2.3.0-bin-hadoop2.7/conf/
-ADD core-site.xml.s3 /opt/spark-2.3.0-bin-hadoop2.7/conf/
-ADD core-site.xml.gcs /opt/spark-2.3.0-bin-hadoop2.7/conf/
-ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
-ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf
+#ADD core-site.xml.datalake /opt/spark-2.3.0-bin-hadoop2.7/conf/
+#ADD core-site.xml.s3 /opt/spark-2.3.0-bin-hadoop2.7/conf/
+#ADD core-site.xml.gcs /opt/spark-2.3.0-bin-hadoop2.7/conf/
+#ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
 
 ADD krb5.conf.integration /etc/
 ADD krb5.conf /etc/
@@ -66,6 +65,10 @@ RUN cd /opt && \
     
 RUN chmod 777 /entrypoint.sh
 RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-latest-hadoop2.jar -O /opt/gcs-connector-latest-hadoop2.jar
+
+ADD core-site.xml.apiKey $SPARK_HOME/conf/
+ADD core-site.xml.basic $SPARK_HOME/conf/
+ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf
 
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000

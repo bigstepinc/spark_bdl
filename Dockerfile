@@ -56,7 +56,14 @@ RUN cd /tmp && \
     wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" -O /tmp/sbt-0.13.11.tgz && \
     tar -xvf /tmp/sbt-0.13.11.tgz -C /usr/local && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
-   
+
+RUN cd /opt && \
+    wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
+    tar -xzvf bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
+    rm -rf /opt/bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
+    cp /opt/bigstepdatalake-1.0-SNAPSHOT/lib/* $SPARK_HOME/jars/ && \
+    export PATH=$PATH:/opt/bigstepdatalake-1.0-SNAPSHOT/bin
+    
 RUN chmod 777 /entrypoint.sh
 RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-latest-hadoop2.jar -O /opt/gcs-connector-latest-hadoop2.jar
 

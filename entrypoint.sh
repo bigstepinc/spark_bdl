@@ -89,6 +89,9 @@ fi
 if [ "$SPARK_NETWORK_TIMEOUT" == "" ]; then
   SPARK_NETWORK_TIMEOUT=120
 fi
+if [ "$SPARK_HEARTBEAT" == "" ]; then
+  SPARK_HEARTBEAT=20
+fi
 if [ "$SPARK_RPC_TIMEOUT" == "" ]; then
   SPARK_RPC_TIMEOUT=120
 fi

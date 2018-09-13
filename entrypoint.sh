@@ -93,10 +93,10 @@ if [ "$SPARK_HEARTBEAT" == "" ]; then
   SPARK_HEARTBEAT=20
 fi
 if [ "$SPARK_RPC_TIMEOUT" == "" ]; then
-  SPARK_RPC_TIMEOUT=120
+  SPARK_RPC_TIMEOUT=240
 fi
 if [ "$SPARK_RPC_NUM_RETRIES" == "" ]; then
-  SPARK_RPC_NUM_RETRIES=3
+  SPARK_RPC_NUM_RETRIES=5
 fi
 if [ "$DYNAMIC_PARTITION_VALUE" == "" ]; then
   DYNAMIC_PARTITION_VALUE=`true`
@@ -145,7 +145,6 @@ if [ "$LOCAL_DIR" != "" ]; then
 
 	export ESCAPED_LOCAL_DIR="${LOCAL_DIR//\//\\/}"
 	
-	mkdir $LOCAL_DIR
 	mkdir $LOCAL_DIR/$SPARK_HOSTNAME
 	mkdir $LOCAL_DIR/$SPARK_HOSTNAME/logs
 	mkdir $LOCAL_DIR/$SPARK_HOSTNAME/work

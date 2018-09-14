@@ -11,49 +11,10 @@ export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxM
 export CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar
 export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"
 
-
 echo Using SPARK_HOME=$SPARK_HOME
 
 . "${SPARK_HOME}/sbin/spark-config.sh"
 . "${SPARK_HOME}/bin/load-spark-env.sh"
-
-#if [ "$ENV" == "s3" ]; then
-#	mv $SPARK_HOME/conf/core-site.xml.s3 $SPARK_HOME/conf/core-site.xml
-#fi
-#if [ "$ENV" == "gcs" ]; then
-#	mv $SPARK_HOME/conf/core-site.xml.gcs $SPARK_HOME/conf/core-site.xml
-#fi
-#if [ "$ENV" == "bigstep" ]; then
-#	mv $SPARK_HOME/conf/core-site.xml.datalake $SPARK_HOME/conf/core-site.xml
-#fi
-#if [ "$ENV" == "integration" ]; then
-#	mv $SPARK_HOME/conf/core-site.xml.datalake.integration $SPARK_HOME/conf/core-site.xml
-#fi
-
-#Configure Google Cloud Platform connection details 
-
-#if [ "$JSON_KEY_FILE" != "" ]; then
-##	sed "s/JSON_KEY_FILE/$JSON_KEY_FILE/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \#
-#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-#fi
-#if [ "$GCP_PROJECT_ID" != "" ]; then#
-#	sed "s/GCP_PROJECT_ID/$GCP_PROJECT_ID/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \#
-#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-#fi
-
-#Configure AWS connection details
-#if [ "$ACCESSKEY" != "" ]; then
-#	sed "s/ACCESSKEY/$ACCESSKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-#fi
-#if [ "$SECRETKEY" != "" ]; then
-#	sed "s/SECRETKEY/$SECRETKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-#fi
-#if [ "$S3_ENDPOINT" != "" ]; then
-#	sed "s/S3_ENDPOINT/$S3_ENDPOINT/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-#	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-#fi
 
 if [ "$SPARK_MASTER_PORT" == "" ]; then
   SPARK_MASTER_PORT=7077
@@ -230,6 +191,69 @@ sed "s/SPARK_HEARTBEAT/$SPARK_HEARTBEAT/" $SPARK_HOME/conf/spark-defaults.conf >
 mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
 cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
+rm -rf $SPARK_HOME/conf/core-site.xml.*
+
+# Add metadata support
+if [ "$POSTGRES_HOSTNAME" != "" ]; then
+	sed "s/POSTGRES_HOSTNAME/$POSTGRES_HOSTNAME/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+if [ "$POSTGRES_PORT" != "" ]; then
+	sed "s/POSTGRES_PORT/$POSTGRES_PORT/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+if [ "$SPARK_POSTGRES_DB" != "" ]; then
+	sed "s/SPARK_POSTGRES_DB/$SPARK_POSTGRES_DB/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+if [ "$SPARK_POSTGRES_USER" != "" ]; then
+	sed "s/SPARK_POSTGRES_USER/$SPARK_POSTGRES_USER/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+if [ "$DYNAMIC_PARTITION_VALUE" != "" ]; then
+	sed "s/DYNAMIC_PARTITION_VALUE/$DYNAMIC_PARTITION_VALUE/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+if [ "$DYNAMIC_PARTITION_MODE" != "" ]; then
+	sed "s/DYNAMIC_PARTITION_MODE/$DYNAMIC_PARTITION_MODE/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+if [ "$NR_MAX_DYNAMIC_PARTITIONS" != "" ]; then
+	sed "s/NR_MAX_DYNAMIC_PARTITIONS/$NR_MAX_DYNAMIC_PARTITIONS/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" != "" ]; then
+	sed "s/MAX_DYNAMIC_PARTITIONS_PER_NODE/$MAX_DYNAMIC_PARTITIONS_PER_NODE/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+	mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+fi
+
+export SPARK_POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH/SPARK_POSTGRES_PASSWORD)
+
+sed "s/SPARK_POSTGRES_PASSWORD/$SPARK_POSTGRES_PASSWORD/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \
+mv $SPARK_HOME/conf/hive-site.xml.tmp $SPARK_HOME/conf/hive-site.xml
+
+export POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH/POSTGRES_PASSWORD)
+export PGPASSWORD=$POSTGRES_PASSWORD 
+
+psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE USER $SPARK_POSTGRES_USER WITH PASSWORD '$SPARK_POSTGRES_PASSWORD';"
+
+psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE DATABASE $SPARK_POSTGRES_DB;"
+
+psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U $POSTGRES_USER -d $POSTGRES_DB -c "grant all PRIVILEGES on database $SPARK_POSTGRES_DB to $SPARK_POSTGRES_USER;" 
+
+cd $SPARK_HOME/jars
+
+export PGPASSWORD=$SPARK_POSTGRES_PASSWORD
+
+psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $SPARK_POSTGRES_USER -d $SPARK_POSTGRES_DB -f /opt/spark-2.3.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql
+
 export PATH=$BDL_HOME/bin:$PATH
 
 if [ "$MODE" == "" ]; then

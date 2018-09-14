@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export SPARK_HOME="/opt/spark-2.3.0-bin-hadoop2.7"
+export BDL_HOME="/opt/bigstepdatalake-1.0-SNAPSHOT"
 export JAVA_HOME="/opt/jdk1.8.0_181/"                                                                                                                               
 export PATH="$PATH:/opt/jdk1.8.0_181/bin:/opt/jdk1.8.0_181/jre/bin"
 export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
@@ -227,6 +228,9 @@ mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 
 sed "s/SPARK_HEARTBEAT/$SPARK_HEARTBEAT/" $SPARK_HOME/conf/spark-defaults.conf >> $SPARK_HOME/conf/spark-defaults.conf.tmp && \
 mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
+
+cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
+export PATH=$BDL_HOME/bin:$PATH
 
 if [ "$MODE" == "" ]; then
 MODE=$1

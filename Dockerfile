@@ -69,6 +69,7 @@ RUN cd $SPARK_HOME/jars/ && \
 ADD core-site.xml.apiKey $SPARK_HOME/conf/
 ADD core-site.xml.basic $SPARK_HOME/conf/
 ADD spark-defaults.conf $SPARK_HOME/conf/
+ADD hive-site.xml $SPARK_HOME/conf/
 
 RUN chmod 777 /entrypoint.sh
 

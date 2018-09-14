@@ -144,23 +144,23 @@ fi
 if [ "$AUTH_METHOD" == "basic" ]; then
 	mv $SPARK_HOME/conf/core-site.xml.basic $SPARK_HOME/conf/core-site.xml
 	if [ "$OBJ_STORAGE_USERNAME" != "" ]; then
-		sed "s/OBJ_STORAGE_USERNAME/$OBJ_STORAGE_USERNAME" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		sed "s/OBJ_STORAGE_USERNAME/$OBJ_STORAGE_USERNAME/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
 	if [ "$OBJ_STORAGE_PASSWORD" != "" ]; then
-		sed "s/OBJ_STORAGE_PASSWORD/$OBJ_STORAGE_PASSWORD" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		sed "s/OBJ_STORAGE_PASSWORD/$OBJ_STORAGE_PASSWORD/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
 fi 
 if [ "$AUTH_METHOD" == "apikey" ]; then
 	mv $SPARK_HOME/conf/core-site.xml.apiKey $SPARK_HOME/conf/core-site.xml
 	if [ "$AUTH_APIKEY" != "" ]; then
-		sed "s/AUTH_APIKEY/$AUTH_APIKEY" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		sed "s/AUTH_APIKEY/$AUTH_APIKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
 fi
 if [ "$SET_PATH_TO_CONF_FOLDER" != "" ]; then
-		sed "s/SET_PATH_TO_CONF_FOLDER/$SET_PATH_TO_CONF_FOLDER" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		sed "s/SET_PATH_TO_CONF_FOLDER/$SET_PATH_TO_CONF_FOLDER/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 fi
 

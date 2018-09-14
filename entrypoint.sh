@@ -160,7 +160,7 @@ if [ "$AUTH_METHOD" == "apikey" ]; then
 	fi
 fi
 if [ "$SET_PATH_TO_CONF_FOLDER" != "" ]; then
-		sed "s/SET_PATH_TO_CONF_FOLDER/$SET_PATH_TO_CONF_FOLDER/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		sed "s/SET_PATH_TO_CONF_FOLDER/${SET_PATH_TO_CONF_FOLDER//\//\\/}/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 fi
 

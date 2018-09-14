@@ -2,14 +2,6 @@ FROM ubuntu:16.04
 
 ADD entrypoint.sh /
 
-#ADD core-site.xml.datalake /opt/spark-2.3.0-bin-hadoop2.7/conf/
-#ADD core-site.xml.s3 /opt/spark-2.3.0-bin-hadoop2.7/conf/
-#ADD core-site.xml.gcs /opt/spark-2.3.0-bin-hadoop2.7/conf/
-#ADD core-site.xml.datalake.integration /opt/spark-2.3.0-bin-hadoop2.7/conf/
-
-ADD krb5.conf.integration /etc/
-ADD krb5.conf /etc/
-
 # Install Java 8
 ENV JAVA_HOME /opt/jdk1.8.0_181
 ENV PATH $PATH:/opt/jdk1.8.0_181/bin:/opt/jdk1.8.0_181/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
@@ -63,12 +55,22 @@ RUN cd /opt && \
     cp /opt/bigstepdatalake-1.0-SNAPSHOT/lib/* $SPARK_HOME/jars/ && \
     export PATH=$PATH:/opt/bigstepdatalake-1.0-SNAPSHOT/bin
     
-RUN chmod 777 /entrypoint.sh
-RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-latest-hadoop2.jar -O /opt/gcs-connector-latest-hadoop2.jar
+#Add Thrift and Metadata support
+RUN cd $SPARK_HOME/jars/ && \
+   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql && \
+   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql && \
+   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql && \
+   wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P $SPARK_HOME/jars/ && \
+   add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && \
+   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+   apt-get install -y postgresql-client 
 
+#Add configuration files
 ADD core-site.xml.apiKey $SPARK_HOME/conf/
 ADD core-site.xml.basic $SPARK_HOME/conf/
-ADD spark-defaults.conf /opt/spark-2.3.0-bin-hadoop2.7/conf/spark-defaults.conf
+ADD spark-defaults.conf $SPARK_HOME/conf/
+
+RUN chmod 777 /entrypoint.sh
 
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000

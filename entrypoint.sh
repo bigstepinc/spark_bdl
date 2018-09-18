@@ -41,10 +41,10 @@ if [ "$MEM" == "" ]; then
   MEM=1g
 fi
 if [ "$SPARK_MASTER_HOSTNAME" == "" ]; then
-  SPARK_MASTER_HOSTNAME=`hostname -f`
+  SPARK_MASTER_HOSTNAME='hostname -f'
 fi
 if [ "$SPARK_HOSTNAME" == "" ]; then
-  SPARK_HOSTNAME=`hostname -f`
+  SPARK_HOSTNAME='hostname -f'
 fi
 
 # Setting defaults for spark and Hive parameters -> RPC error
@@ -61,10 +61,10 @@ if [ "$SPARK_RPC_NUM_RETRIES" == "" ]; then
   SPARK_RPC_NUM_RETRIES=5
 fi
 if [ "$DYNAMIC_PARTITION_VALUE" == "" ]; then
-  DYNAMIC_PARTITION_VALUE=`true`
+  DYNAMIC_PARTITION_VALUE='true'
 fi
 if [ "$DYNAMIC_PARTITION_MODE" == "" ]; then
-  DYNAMIC_PARTITION_MODE=`nonstrict`
+  DYNAMIC_PARTITION_MODE='nonstrict'
 fi
 if [ "$NR_MAX_DYNAMIC_PARTITIONS" == "" ]; then
   NR_MAX_DYNAMIC_PARTITIONS=1000

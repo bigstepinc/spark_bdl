@@ -193,7 +193,7 @@ mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
 rm -rf $SPARK_HOME/conf/core-site.xml.*
 
-if [ "DB_TYPE" == "postgresql" ]; then
+if [ "$DB_TYPE" == "postgresql" ]; then
 	# Add metadata support
 	if [ "$POSTGRES_HOSTNAME" != "" ]; then
 		sed "s/POSTGRES_HOSTNAME/$POSTGRES_HOSTNAME/" $SPARK_HOME/conf/hive-site.xml >> $SPARK_HOME/conf/hive-site.xml.tmp && \

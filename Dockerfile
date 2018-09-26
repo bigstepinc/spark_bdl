@@ -50,10 +50,10 @@ RUN cd /tmp && \
 
 RUN cd /opt && \
     wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-0.1-SNAPSHOT-bin.tar.gz && \
-    tar -xzvf bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
-    rm -rf /opt/bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
-    cp /opt/bigstepdatalake-1.0-SNAPSHOT/lib/* $SPARK_HOME/jars/ && \
-    export PATH=$PATH:/opt/bigstepdatalake-1.0-SNAPSHOT/bin
+    tar -xzvf bigstepdatalake-0.1-SNAPSHOT-bin.tar.gz && \
+    rm -rf /opt/bigstepdatalake-0.1-SNAPSHOT-bin.tar.gz && \
+    cp /opt/bigstepdatalake-0.1-SNAPSHOT/lib/* $SPARK_HOME/jars/ && \
+    export PATH=$PATH:/opt/bigstepdatalake-0.1-SNAPSHOT/bin
     
 #Add Thrift and Metadata support
 RUN cd $SPARK_HOME/jars/ && \

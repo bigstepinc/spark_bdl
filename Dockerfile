@@ -49,7 +49,7 @@ RUN cd /tmp && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 RUN cd /opt && \
-    wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
+    wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-0.1-SNAPSHOT-bin.tar.gz && \
     tar -xzvf bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
     rm -rf /opt/bigstepdatalake-1.0-SNAPSHOT-bin.tar.gz && \
     cp /opt/bigstepdatalake-1.0-SNAPSHOT/lib/* $SPARK_HOME/jars/ && \

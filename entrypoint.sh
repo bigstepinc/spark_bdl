@@ -113,6 +113,10 @@ if [ "$AUTH_METHOD" == "mock-basic" ]; then
 		sed "s/OBJ_STORAGE_PASSWORD/$OBJ_STORAGE_PASSWORD/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
+	if [ "$SET_PATH_TO_CONF_FOLDER" != "" ]; then
+		sed "s/SET_PATH_TO_CONF_FOLDER/${SET_PATH_TO_CONF_FOLDER//\//\\/}/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+	fi
 fi 
 if [ "$AUTH_METHOD" == "mock-apikey" ]; then
 	mv $SPARK_HOME/conf/core-site.xml.mock-apiKey $SPARK_HOME/conf/core-site.xml
@@ -120,10 +124,21 @@ if [ "$AUTH_METHOD" == "mock-apikey" ]; then
 		sed "s/AUTH_APIKEY/$AUTH_APIKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
-fi
-if [ "$SET_PATH_TO_CONF_FOLDER" != "" ]; then
+	if [ "$SET_PATH_TO_CONF_FOLDER" != "" ]; then
 		sed "s/SET_PATH_TO_CONF_FOLDER/${SET_PATH_TO_CONF_FOLDER//\//\\/}/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+	fi
+fi
+if [ "$AUTH_METHOD" == "apikey" ]; then
+	mv $SPARK_HOME/conf/core-site.xml.apiKey $SPARK_HOME/conf/core-site.xml
+	if [ "$AUTH_APIKEY" != "" ]; then
+		sed "s/AUTH_APIKEY/$AUTH_APIKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+	fi
+	if [ "$API_ENDPOINT" != "" ]; then
+		sed "s/API_ENDPOINT/${API_ENDPOINT//\//\\/}/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
+		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
+	fi
 fi
 
 if [ "$LOCAL_DIR" != "" ]; then

@@ -8,16 +8,16 @@
         <name>fs.bdl.auth.apiKey</name>
         <value>AUTH_APIKEY</value>
     </property>
+    
+    <property>
+        <name>fs.bdl.api.endpoint</name>
+        <value>API_ENDPOINT</value>
+    </property>
 
     <!--MOCK ZONE-->
     <property>
         <name>bdl.conf.mock.enabled</name>
-        <value>true</value>
-    </property>
-
-    <property>
-        <name>bdl.conf.mock.location</name>
-        <value>SET_PATH_TO_CONF_FOLDER</value>
+        <value>false</value>
     </property>
     <!--/MOCK ZONE-->
 </configuration>

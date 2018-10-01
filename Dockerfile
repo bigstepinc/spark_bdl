@@ -68,6 +68,7 @@ RUN cd $SPARK_HOME/jars/ && \
 #Add configuration files
 ADD core-site.xml.mock-apiKey $SPARK_HOME/conf/
 ADD core-site.xml.mock-basic $SPARK_HOME/conf/
+ADD core-site.xml.apiKey $SPARK_HOME/conf/
 ADD spark-defaults.conf $SPARK_HOME/conf/
 ADD hive-site.xml $SPARK_HOME/conf/
 

@@ -16,6 +16,11 @@
 
     <!--MOCK ZONE-->
     <property>
+        <name>bdl.conf.mock.enabled</name>
+        <value>true</value>
+    </property>
+
+    <property>
         <name>bdl.conf.mock.location</name>
         <value>SET_PATH_TO_CONF_FOLDER</value>
     </property>

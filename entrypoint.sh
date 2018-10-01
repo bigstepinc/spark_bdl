@@ -103,8 +103,8 @@ fi
 
 #Configure core-site.xml based on the configured authentication method
 
-if [ "$AUTH_METHOD" == "basic" ]; then
-	mv $SPARK_HOME/conf/core-site.xml.basic $SPARK_HOME/conf/core-site.xml
+if [ "$AUTH_METHOD" == "mock-basic" ]; then
+	mv $SPARK_HOME/conf/core-site.xml.mock-basic $SPARK_HOME/conf/core-site.xml
 	if [ "$OBJ_STORAGE_USERNAME" != "" ]; then
 		sed "s/OBJ_STORAGE_USERNAME/$OBJ_STORAGE_USERNAME/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
@@ -114,8 +114,8 @@ if [ "$AUTH_METHOD" == "basic" ]; then
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
 fi 
-if [ "$AUTH_METHOD" == "apikey" ]; then
-	mv $SPARK_HOME/conf/core-site.xml.apiKey $SPARK_HOME/conf/core-site.xml
+if [ "$AUTH_METHOD" == "mock-apikey" ]; then
+	mv $SPARK_HOME/conf/core-site.xml.mock-apiKey $SPARK_HOME/conf/core-site.xml
 	if [ "$AUTH_APIKEY" != "" ]; then
 		sed "s/AUTH_APIKEY/$AUTH_APIKEY/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml

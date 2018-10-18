@@ -141,6 +141,18 @@ if [ "$AUTH_METHOD" == "apikey" ]; then
 	fi
 fi
 
+if [ "$AUDIT_ENABLED" == "true" ]; then
+	mv $SPARK_HOME/conf/log4j2.xml.audit $SPARK_HOME/conf/log4j2.xml
+	if [ "$AUDIT_ELASTICSEARCH_URL" != "" ]; then
+		sed "s/AUDIT_ELASTICSEARCH_URL/$AUDIT_ELASTICSEARCH_URL/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
+		mv $SPARK_HOME/conf/log4j2.xml.tmp $SPARK_HOME/conf/log4j2.xml
+	fi
+	sed "s/AUDIT_ELASTICSEARCH_AUTH_TOKEN/$AUDIT_ELASTICSEARCH_AUTH_TOKEN/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
+	mv $SPARK_HOME/conf/log4j2.xml.tmp $SPARK_HOME/conf/log4j2.xml
+else
+	mv $SPARK_HOME/conf/log4j2.xml.default $SPARK_HOME/conf/log4j2.xml
+fi
+
 if [ "$LOCAL_DIR" != "" ]; then
 	
 	export NOTEBOOK_DIR=$LOCAL_DIR

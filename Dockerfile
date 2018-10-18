@@ -71,6 +71,8 @@ ADD core-site.xml.mock-basic $SPARK_HOME/conf/
 ADD core-site.xml.apiKey $SPARK_HOME/conf/
 ADD spark-defaults.conf $SPARK_HOME/conf/
 ADD hive-site.xml $SPARK_HOME/conf/
+ADD log4j2.xml.default $SPARK_HOME/conf/
+ADD log4j2.xml.audit $SPARK_HOME/conf/
 
 RUN chmod 777 /entrypoint.sh
 

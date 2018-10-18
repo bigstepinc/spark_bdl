@@ -49,11 +49,11 @@ RUN cd /tmp && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 RUN cd /opt && \
-    wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-0.6-SNAPSHOT-bin.tar.gz && \
-    tar -xzvf bigstepdatalake-0.6-SNAPSHOT-bin.tar.gz && \
-    rm -rf /opt/bigstepdatalake-0.6-SNAPSHOT-bin.tar.gz && \
-    cp /opt/bigstepdatalake-0.6-SNAPSHOT/lib/* $SPARK_HOME/jars/ && \
-    export PATH=$PATH:/opt/bigstepdatalake-0.6-SNAPSHOT/bin
+    wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-0.7-SNAPSHOT-bin.tar.gz && \
+    tar -xzvf bigstepdatalake-0.7-SNAPSHOT-bin.tar.gz && \
+    rm -rf /opt/bigstepdatalake-0.7-SNAPSHOT-bin.tar.gz && \
+    cp /opt/bigstepdatalake-0.7-SNAPSHOT/lib/* $SPARK_HOME/jars/ && \
+    export PATH=$PATH:/opt/bigstepdatalake-0.7-SNAPSHOT/bin
     
 #Add Thrift and Metadata support
 RUN cd $SPARK_HOME/jars/ && \

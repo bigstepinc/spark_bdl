@@ -2,8 +2,8 @@
 
 export SPARK_HOME="/opt/spark-2.3.0-bin-hadoop2.7"
 export BDL_HOME="/opt/bigstepdatalake-0.7-SNAPSHOT"
-export JAVA_HOME="/opt/jdk1.8.0_181/"                                                                                                                               
-export PATH="$PATH:/opt/jdk1.8.0_181/bin:/opt/jdk1.8.0_181/jre/bin"
+export JAVA_HOME="/opt/jdk1.8.0_191/"                                                                                                                               
+export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"
 export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
 export HADOOP_CONF_DIR="$SPARK_HOME/conf"
 export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"

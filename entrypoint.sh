@@ -146,11 +146,11 @@ fi
 if [ "$AUDIT_ENABLED" == "true" ]; then
 	mv $SPARK_HOME/conf/log4j2.xml.audit $SPARK_HOME/conf/log4j2.xml
 	if [ "$AUDIT_ELASTICSEARCH_URL" != "" ]; then
-		sed "s/AUDIT_ELASTICSEARCH_URL/$AUDIT_ELASTICSEARCH_URL/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
+		sed "s/AUDIT_ELASTICSEARCH_URL/${AUDIT_ELASTICSEARCH_URL//\//\\/}/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
 		mv $SPARK_HOME/conf/log4j2.xml.tmp $SPARK_HOME/conf/log4j2.xml
 	fi
 
-	sed "s/AUDIT_ELASTICSEARCH_AUTH_TOKEN/$AUDIT_ELASTICSEARCH_AUTH_TOKEN/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
+	sed "s/AUDIT_ELASTICSEARCH_AUTH_TOKEN/${AUDIT_ELASTICSEARCH_AUTH_TOKEN//\//\\/}/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
 	mv $SPARK_HOME/conf/log4j2.xml.tmp $SPARK_HOME/conf/log4j2.xml
 
 	sed "s/AUDIT_ENABLE/true/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \

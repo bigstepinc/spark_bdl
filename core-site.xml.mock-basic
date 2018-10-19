@@ -16,6 +16,17 @@
 
     <!--MOCK ZONE-->
     <property>
+        <name>bdl.conf.mock.audit.enabled</name>
+        <value>AUDIT_ENABLE</value>
+    </property>
+
+    <!-- This way of setting the userId is highly unsafe and was put here only for testing purposes. -->
+    <property>
+        <name>bdl.conf.mock.audit.userId</name>
+        <value>AUDIT_MOCK_USERID</value>
+    </property>
+    
+    <property>
         <name>bdl.conf.mock.enabled</name>
         <value>true</value>
     </property>

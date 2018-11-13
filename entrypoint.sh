@@ -160,7 +160,7 @@ if [ "$LOCAL_DIR" != "" ]; then
 	mv $SPARK_HOME/conf/spark-defaults.conf.tmp $SPARK_HOME/conf/spark-defaults.conf
 fi
 
-if [ "$SPARK_WAREHOUSE_URL" != "" ]; then
+if [ "$SPARK_WAREHOUSE_DIR" != "" ]; then
 	echo "spark.sql.warehouse.dir=${SPARK_WAREHOUSE_DIR}" >> $SPARK_HOME/conf/spark-defaults.conf
 fi
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SPARK_HOME="/opt/spark-2.3.0-bin-hadoop2.7"
+export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"
 export BDL_HOME="/opt/bigstepdatalake-0.8-SNAPSHOT"
 export JAVA_HOME="/opt/jdk1.8.0_191/"                                                                                                                               
 export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"
@@ -278,7 +278,7 @@ if [ "$DB_TYPE" == "postgresql" ]; then
 
 	export PGPASSWORD=$DB_PASSWORD
 
-	psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $DB_USER -d $DB_NAME -f /opt/spark-2.3.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql
+	psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $DB_USER -d $DB_NAME -f $SPARK_HOME/jars/hive-schema-1.2.0.postgres.sql
 
 fi
 

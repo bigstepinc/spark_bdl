@@ -53,7 +53,7 @@ RUN cd /opt && \
     tar -xzvf bigstepdatalake-0.9.1-bin.tar.gz && \
     rm -rf /opt/bigstepdatalake-0.9.1-bin.tar.gz && \
     cp /opt/bigstepdatalake-0.9.1/lib/* $SPARK_HOME/jars/ && \
-    export PATH=$PATH:/opt/bigstepdatalake-0.9.1/bin
+    export PATH=/opt/bigstepdatalake-0.9.1/bin:$PATH
     
 #Add Thrift and Metadata support
 RUN cd $SPARK_HOME/jars/ && \

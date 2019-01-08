@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"
-export BDL_HOME="/opt/bigstepdatalake-0.8-SNAPSHOT"
+export BDL_HOME="/opt/bigstepdatalake-0.9.1"
 export JAVA_HOME="/opt/jdk1.8.0_191/"                                                                                                                               
 export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"
 export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
@@ -137,7 +137,6 @@ else
 
 	mv $SPARK_HOME/conf/log4j2.xml.default $SPARK_HOME/conf/log4j2.xml
 fi
-
 
 if [ "$LOCAL_DIR" != "" ]; then
 	

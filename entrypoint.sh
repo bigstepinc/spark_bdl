@@ -1,15 +1,18 @@
 #!/bin/bash
+echo 'export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"' >> ~/.bashrc && \
+    bash ~/.bashrc
 
-export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"
-export BDL_HOME="/opt/bigstepdatalake-0.9.1"
-export JAVA_HOME="/opt/jdk1.8.0_191/"                                                                                                                               
-export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"
-export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
-export HADOOP_CONF_DIR="$SPARK_HOME/conf"
-export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"
-export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"
-export CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar
-export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"
+echo 'export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"'>> ~/.bashrc
+echo 'export BDL_HOME="/opt/bigstepdatalake-0.9.1"' >> ~/.bashrc
+echo 'export JAVA_HOME="/opt/jdk1.8.0_191/"' >> ~/.bashrc                                                                                                                               
+echo 'export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"' >> ~/.bashrc
+echo 'export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"' >> ~/.bashrc
+echo 'export HADOOP_CONF_DIR="$SPARK_HOME/conf"' >> ~/.bashrc
+echo 'export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"' >> ~/.bashrc
+echo 'export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"' >> ~/.bashrc
+echo 'export CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar' >> ~/.bashrc
+echo 'export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"' >> ~/.bashrc
+bash ~/.bashrc
 
 echo Using SPARK_HOME=$SPARK_HOME
 

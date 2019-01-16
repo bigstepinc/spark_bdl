@@ -7,7 +7,7 @@ ENV JAVA_HOME /opt/jdk1.8.0_191
 ENV PATH $PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
 
 RUN apt-get -qq update -y
-RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git
+RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git gcc make zlib1g-dev
 
 RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-x64.tar.gz" &&\
    tar xzf jdk-8u191-linux-x64.tar.gz && rm -rf jdk-8u191-linux-x64.tar.gz
@@ -64,6 +64,20 @@ RUN cd $SPARK_HOME/jars/ && \
    add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && \
    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
    apt-get install -y postgresql-client 
+   
+#Install Python 3.6.7 and configure alias
+RUN cd /opt && \
+    wget https://www.python.org/ftp/python/3.6.7/Python-3.6.7.tgz && \
+    tar xzf Python-3.6.7.tgz && \
+    rm -rf Python-3.6.7.tgz && \
+    cd ./Python-3.6.7/ && \
+    ./configure && \
+    make && \
+    make test && \
+    make install && \
+    alias python=python3.6 && \
+    cd .. && \
+    rm -rf Python-3.6.7
 
 #Add configuration files
 ADD core-site.xml.apiKey $SPARK_HOME/conf/

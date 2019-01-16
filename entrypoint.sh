@@ -12,6 +12,7 @@ echo 'export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"' >> ~/.bashrc
 echo 'export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"' >> ~/.bashrc
 echo 'export CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar' >> ~/.bashrc
 echo 'export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"' >> ~/.bashrc
+echo 'alias python=python3.6' >> ~/.bashrc
 bash ~/.bashrc
 
 echo Using SPARK_HOME=$SPARK_HOME

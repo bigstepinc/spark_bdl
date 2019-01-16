@@ -1,11 +1,11 @@
 #!/bin/bash
-echo 'export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"' >> ~/.bashrc && \
+echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc && \
     bash ~/.bashrc
 
 echo 'export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"'>> ~/.bashrc
 echo 'export BDL_HOME="/opt/bigstepdatalake-0.10.1"' >> ~/.bashrc
-echo 'export JAVA_HOME="/opt/jdk1.8.0_191/"' >> ~/.bashrc                                                                                                                               
-echo 'export PATH="$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin"' >> ~/.bashrc
+echo 'export JAVA_HOME="/opt/jdk1.8.0_202/"' >> ~/.bashrc                                                                                                                               
+echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_191/jre/bin"' >> ~/.bashrc
 echo 'export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"' >> ~/.bashrc
 echo 'export HADOOP_CONF_DIR="$SPARK_HOME/conf"' >> ~/.bashrc
 echo 'export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"' >> ~/.bashrc

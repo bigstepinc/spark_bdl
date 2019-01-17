@@ -287,6 +287,10 @@ fi
 
 export PATH=$BDL_HOME/bin:$PATH
 
+#Fix python not found file/directory issues
+rm -rf /usr/bin/python
+ln -s /usr/local/bin/python3.6 /usr/bin/python
+
 if [ "$MODE" == "" ]; then
 MODE=$1
 fi

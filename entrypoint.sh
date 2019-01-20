@@ -1,7 +1,5 @@
 #!/bin/bash
-echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc && \
-    bash ~/.bashrc
-
+echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc 
 echo 'export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"'>> ~/.bashrc
 echo 'export BDL_HOME="/opt/bigstepdatalake-0.10.4"' >> ~/.bashrc
 echo 'export JAVA_HOME="/opt/jdk1.8.0_202/"' >> ~/.bashrc                                                                                                                               
@@ -13,7 +11,7 @@ echo 'export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -X
 echo 'export CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar' >> ~/.bashrc
 echo 'export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"' >> ~/.bashrc
 echo 'alias python=python3.6' >> ~/.bashrc
-bash ~/.bashrc
+source ~/.bashrc
 
 echo Using SPARK_HOME=$SPARK_HOME
 

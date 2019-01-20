@@ -114,6 +114,7 @@ if [ "$AUTH_METHOD" == "apikey" ]; then
 		sed "s/API_ENDPOINT/${API_ENDPOINT//\//\\/}/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
+	cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
 fi
 
 #Configure log4j2.xml and core-site.xml based on the audit configuration

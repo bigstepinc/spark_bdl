@@ -287,6 +287,7 @@ fi
 rm -rf /usr/bin/python
 ln -s /usr/local/bin/python3.6 /usr/bin/python
 
+rm -rf $BDL_HOME/conf/core-site.xml
 cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
 
 

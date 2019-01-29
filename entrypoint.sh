@@ -1,9 +1,9 @@
 #!/bin/bash
 echo 'export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"'>> ~/.bashrc
-echo 'export BDL_HOME="/opt/bigstepdatalake-0.10.4"' >> ~/.bashrc
+echo 'export BDL_HOME=/opt/bigstepdatalake-0.10.4' >> ~/.bashrc
 echo 'export JAVA_HOME="/opt/jdk1.8.0_202/"' >> ~/.bashrc                                                                                                                               
 echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc
-echo 'export PATH="$BDL_HOME/bin:$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"' >> ~/.bashrc
+echo 'export PATH=$BDL_HOME/bin:$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin' >> ~/.bashrc
 echo 'export HADOOP_CONF_DIR="$SPARK_HOME/conf"' >> ~/.bashrc
 echo 'export JAVA_CLASSPATH="$JAVA_HOME/jre/lib/"' >> ~/.bashrc
 echo 'export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"' >> ~/.bashrc
@@ -291,8 +291,8 @@ fi
 rm -rf /usr/bin/python
 ln -s /usr/local/bin/python3.6 /usr/bin/python
 
-rm -rf $BDL_HOME/conf/core-site.xml
-cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
+rm -rf /opt/bigstepdatalake-0.10.4/conf/core-site.xml
+cp /opt/spark-2.4.0-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatalake-0.10.4/conf/
 
 
 bdl -mkdir /tmp

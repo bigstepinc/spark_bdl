@@ -294,10 +294,8 @@ ln -s /usr/local/bin/python3.6 /usr/bin/python
 rm -rf /opt/bigstepdatalake-0.10.4/conf/core-site.xml
 cp /opt/spark-2.4.0-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatalake-0.10.4/conf/
 
-
-bdl -mkdir /tmp
-bdl -mkdir /tmp/hive 
-bdl -chmod -R 777 /tmp/hive
+mkdir /tmp/hive 
+chmod -R 777 /tmp/hive
 
 if [ "$MODE" == "" ]; then
 MODE=$1

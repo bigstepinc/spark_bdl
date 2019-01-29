@@ -295,6 +295,10 @@ rm -rf $BDL_HOME/conf/core-site.xml
 cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
 
 
+bdl -mkdir /tmp
+bdl -mkdir /tmp/hive 
+bdl -chmod -R 777 /tmp/hive
+
 if [ "$MODE" == "" ]; then
 MODE=$1
 fi

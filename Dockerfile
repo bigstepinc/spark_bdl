@@ -14,7 +14,7 @@ RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e2
 
 RUN echo 'export JAVA_HOME="/opt/jdk1.8.0_202"' >> ~/.bashrc && \
     echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc && \
-    bash ~/.bashrc && cd /opt/jdk1.8.0_202/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_202/bin/java 1
+    source ~/.bashrc && cd /opt/jdk1.8.0_202/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_202/bin/java 1
     
 #Add Java Security Policies
 RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip && \
@@ -52,8 +52,12 @@ RUN cd /opt && \
     wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-0.10.4-bin.tar.gz && \
     tar -xzvf bigstepdatalake-0.10.4-bin.tar.gz && \
     rm -rf /opt/bigstepdatalake-0.10.4-bin.tar.gz && \
+    cd /opt/bigstepdatalake-0.10.4/lib/ && \
+    wget http://repo.uk.bigstepcloud.com/bigstep/bdl/BDL_libs/libhadoop.so && \
     cp /opt/bigstepdatalake-0.10.4/lib/* $SPARK_HOME/jars/ && \
-    export PATH=/opt/bigstepdatalake-0.10.4/bin:$PATH
+    export PATH=/opt/bigstepdatalake-0.10.4/bin:$PATH && \
+    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/bigstepdatalake-0.10.4/lib/:$SPARK_HOME/jars/' >> ~/.bashrc && \
+    source  ~/.bashrc
     
 #Add Thrift and Metadata support
 RUN cd $SPARK_HOME/jars/ && \

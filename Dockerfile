@@ -57,7 +57,7 @@ RUN cd /opt && \
     cp /opt/bigstepdatalake-0.10.6/lib/* $SPARK_HOME/jars/ && \
     export PATH=/opt/bigstepdatalake-0.10.6/bin:$PATH && \
     echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/bigstepdatalake-0.10.6/lib/:$SPARK_HOME/jars/' >> ~/.bashrc && \
-    source  ~/.bashrc
+    bash  ~/.bashrc
     
 #Add Thrift and Metadata support
 RUN cd $SPARK_HOME/jars/ && \

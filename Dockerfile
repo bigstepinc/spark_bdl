@@ -49,14 +49,14 @@ RUN cd /tmp && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 RUN cd /opt && \
-    wget http://repo.uk.bigstepcloud.com/bigstep/bdl/bigstepdatalake-0.10.6-bin.tar.gz && \
-    tar -xzvf bigstepdatalake-0.10.6-bin.tar.gz && \
-    rm -rf /opt/bigstepdatalake-0.10.6-bin.tar.gz && \
-    cd /opt/bigstepdatalake-0.10.6/lib/ && \
+    wget https://repo.lentiq.com/bigstepdatalake-0.10.10-bin.tar.gz && \
+    tar -xzvf bigstepdatalake-0.10.10-bin.tar.gz && \
+    rm -rf /opt/bigstepdatalake-0.10.10-bin.tar.gz && \
+    cd /opt/bigstepdatalake-0.10.10/lib/ && \
     wget http://repo.uk.bigstepcloud.com/bigstep/bdl/BDL_libs/libhadoop.so && \
-    cp /opt/bigstepdatalake-0.10.6/lib/* $SPARK_HOME/jars/ && \
-    export PATH=/opt/bigstepdatalake-0.10.6/bin:$PATH && \
-    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/bigstepdatalake-0.10.6/lib/:$SPARK_HOME/jars/' >> ~/.bashrc && \
+    cp /opt/bigstepdatalake-0.10.10/lib/* $SPARK_HOME/jars/ && \
+    export PATH=/opt/bigstepdatalake-0.10.10/bin:$PATH && \
+    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/bigstepdatalake-0.10.10/lib/:$SPARK_HOME/jars/' >> ~/.bashrc && \
     bash  ~/.bashrc
     
 #Add Thrift and Metadata support

@@ -1,6 +1,6 @@
 #!/bin/bash
 echo 'export SPARK_HOME="/opt/spark-2.4.0-bin-hadoop2.7"'>> ~/.bashrc
-echo 'export BDL_HOME=/opt/bigstepdatalake-0.10.6' >> ~/.bashrc
+echo 'export BDL_HOME=/opt/bigstepdatalake-0.10.10' >> ~/.bashrc
 echo 'export JAVA_HOME="/opt/jdk1.8.0_202/"' >> ~/.bashrc                                                                                                                               
 echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc
 echo 'export PATH=$BDL_HOME/bin:$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin' >> ~/.bashrc
@@ -291,8 +291,8 @@ fi
 rm -rf /usr/bin/python
 ln -s /usr/local/bin/python3.6 /usr/bin/python
 
-rm -rf /opt/bigstepdatalake-0.10.6/conf/core-site.xml
-cp /opt/spark-2.4.0-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatalake-0.10.6/conf/
+rm -rf /opt/bigstepdatalake-0.10.10/conf/core-site.xml
+cp /opt/spark-2.4.0-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatalake-0.10.10/conf/
 
 mkdir /tmp/hive 
 chmod -R 777 /tmp/hive

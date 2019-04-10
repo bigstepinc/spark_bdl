@@ -23,7 +23,7 @@ RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_202/jre/lib/sec
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.4.1
-RUN cd /opt && wget wget https://www-eu.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz && \
+RUN cd /opt && wget https://www-eu.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz && \
    tar xzvf /opt/spark-2.4.1-bin-hadoop2.7.tgz && \
    rm  /opt/spark-2.4.1-bin-hadoop2.7.tgz
    

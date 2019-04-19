@@ -3,23 +3,28 @@ FROM ubuntu:16.04
 ADD entrypoint.sh /
 
 # Install Java 8
-ENV JAVA_HOME /opt/jdk1.8.0_202
-ENV PATH $PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
+ENV JAVA_HOME /usr/
+ENV PATH $PATH:/usr/bin:/usr/lib:/etc/alternatives:/var/lib/dpkg/alternatives
+#ENV JAVA_HOME /opt/jdk1.8.0_202
+#ENV PATH $PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
 
 RUN apt-get -qq update -y
-RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git gcc make zlib1g-dev
+RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git gcc make zlib1g-dev openjdk-8-jre
 
-RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jdk-8u202-linux-x64.tar.gz" &&\
-   tar xzf jdk-8u202-linux-x64.tar.gz && rm -rf jdk-8u202-linux-x64.tar.gz
+#RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jdk-8u202-linux-x64.tar.gz" &&\
+ #  tar xzf jdk-8u202-linux-x64.tar.gz && rm -rf jdk-8u202-linux-x64.tar.gz
 
-RUN echo 'export JAVA_HOME="/opt/jdk1.8.0_202"' >> ~/.bashrc && \
-    echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc && \
-    bash ~/.bashrc && cd /opt/jdk1.8.0_202/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_202/bin/java 1
+RUN echo 'export JAVA_HOME="/usr/bin"' >> ~/.bashrc && \
+    echo 'export PATH="$PATH:/usr/bin:/usr/lib"' >> ~/.bashrc && \
+    bash ~/.bashrc 
+#echo 'export JAVA_HOME="/opt/jdk1.8.0_202"' >> ~/.bashrc && \
+#echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc && \
+#bash ~/.bashrc && cd /opt/jdk1.8.0_202/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_202/bin/java 1
     
 #Add Java Security Policies
 RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip && \
    unzip jce_policy-8.zip
-RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_202/jre/lib/security/ && cp UnlimitedJCEPolicyJDK8/local_policy.jar /opt/jdk1.8.0_202/jre/lib/security/
+RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security && cp UnlimitedJCEPolicyJDK8/local_policy.jar /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.4.1
@@ -30,7 +35,7 @@ RUN cd /opt && wget https://www-eu.apache.org/dist/spark/spark-2.4.1/spark-2.4.1
 # Spark pointers for Jupyter Notebook
 ENV SPARK_HOME /opt/spark-2.4.1-bin-hadoop2.7
 ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/lib/R/library
-ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip
+ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
 ENV PATH $PATH:/$SPARK_HOME/bin/
 
@@ -75,13 +80,15 @@ RUN cd /opt && \
     tar xzf Python-3.6.7.tgz && \
     rm -rf Python-3.6.7.tgz && \
     cd ./Python-3.6.7/ && \
-    ./configure && \
+    ./configure --with-ssl && \
     make && \
     make test && \
     make install && \
     alias python=python3.6 && \
     cd .. && \
-    rm -rf Python-3.6.7
+    rm -rf Python-3.6.7 && \
+    pip3 install numpy && \
+    pip3 install py4j==0.10.7
 
 #Add configuration files
 ADD core-site.xml.apiKey $SPARK_HOME/conf/

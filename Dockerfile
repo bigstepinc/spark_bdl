@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 ADD entrypoint.sh /
 
 # Install Java 8
-ENV JAVA_HOME /usr/
+ENV JAVA_HOME /usr
 ENV PATH $PATH:/usr/bin:/usr/lib:/etc/alternatives:/var/lib/dpkg/alternatives
 #ENV JAVA_HOME /opt/jdk1.8.0_202
 #ENV PATH $PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives

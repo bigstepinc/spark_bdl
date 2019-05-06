@@ -88,6 +88,7 @@ RUN cd /opt && \
     cd .. && \
     rm -rf Python-3.6.7 && \
     pip3 install numpy && \
+    pip3 install pandas && \
     pip3 install py4j==0.10.7
 
 #Add configuration files

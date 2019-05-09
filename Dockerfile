@@ -2,24 +2,19 @@ FROM ubuntu:16.04
 
 ADD entrypoint.sh /
 
+ENV SPARK_VERSION 2.4.1
+ENV BDLCL_VERSION 0.11.3
+
 # Install Java 8
 ENV JAVA_HOME /usr
 ENV PATH $PATH:/usr/bin:/usr/lib:/etc/alternatives:/var/lib/dpkg/alternatives
-#ENV JAVA_HOME /opt/jdk1.8.0_202
-#ENV PATH $PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin:/etc/alternatives:/var/lib/dpkg/alternatives
 
 RUN apt-get -qq update -y
 RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git gcc make zlib1g-dev openjdk-8-jre libssl-dev
 
-#RUN cd /opt && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jdk-8u202-linux-x64.tar.gz" &&\
- #  tar xzf jdk-8u202-linux-x64.tar.gz && rm -rf jdk-8u202-linux-x64.tar.gz
-
-RUN echo 'export JAVA_HOME="/usr/bin"' >> ~/.bashrc && \
+RUN echo 'export JAVA_HOME="/usr"' >> ~/.bashrc && \
     echo 'export PATH="$PATH:/usr/bin:/usr/lib"' >> ~/.bashrc && \
     bash ~/.bashrc 
-#echo 'export JAVA_HOME="/opt/jdk1.8.0_202"' >> ~/.bashrc && \
-#echo 'export PATH="$PATH:/opt/jdk1.8.0_202/bin:/opt/jdk1.8.0_202/jre/bin"' >> ~/.bashrc && \
-#bash ~/.bashrc && cd /opt/jdk1.8.0_202/ && update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_202/bin/java 1
     
 #Add Java Security Policies
 RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip && \
@@ -28,12 +23,12 @@ RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /usr/lib/jvm/java-8-openjdk-a
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.4.1
-RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz && \
-   tar xzvf /opt/spark-2.4.1-bin-hadoop2.7.tgz && \
-   rm  /opt/spark-2.4.1-bin-hadoop2.7.tgz
+RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.7.tgz && \
+   tar xzvf /opt/spark-$SPARK_VERSION-bin-hadoop2.7.tgz && \
+   rm  /opt/spark-$SPARK_VERSION-bin-hadoop2.7.tgz
    
 # Spark pointers for Jupyter Notebook
-ENV SPARK_HOME /opt/spark-2.4.1-bin-hadoop2.7
+ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-hadoop2.7
 ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/lib/R/library
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
@@ -54,14 +49,14 @@ RUN cd /tmp && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 RUN cd /opt && \
-    wget https://repo.lentiq.com/bigstepdatalake-0.11.3-bin.tar.gz && \
-    tar -xzvf bigstepdatalake-0.11.3-bin.tar.gz && \
-    rm -rf /opt/bigstepdatalake-0.11.3-bin.tar.gz && \
-    cd /opt/bigstepdatalake-0.11.3/lib/ && \
+    wget https://repo.lentiq.com/bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
+    tar -xzvf bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
+    rm -rf /opt/bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
+    cd /opt/bigstepdatalake-$BDLCL_VERSION/lib/ && \
     wget http://repo.uk.bigstepcloud.com/bigstep/bdl/BDL_libs/libhadoop.so && \
-    cp /opt/bigstepdatalake-0.11.3/lib/* $SPARK_HOME/jars/ && \
-    export PATH=/opt/bigstepdatalake-0.11.3/bin:$PATH && \
-    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/bigstepdatalake-0.11.3/lib/:$SPARK_HOME/jars/' >> ~/.bashrc && \
+    cp /opt/bigstepdatalake-$BDLCL_VERSION/lib/* $SPARK_HOME/jars/ && \
+    export PATH=/opt/bigstepdatalake-$BDLCL_VERSION/bin:$PATH && \
+    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/bigstepdatalake-$BDLCL_VERSION/lib/:$SPARK_HOME/jars/' >> ~/.bashrc && \
     bash  ~/.bashrc
     
 #Add Thrift and Metadata support

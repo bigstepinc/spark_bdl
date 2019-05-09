@@ -82,7 +82,7 @@ RUN cd /opt && \
     cd ./Python-3.6.7/ && \
     ./configure --with-ssl && \
     make && \
-    make test && \
+#    make test && \
     make install && \
     alias python=python3.6 && \
     cd .. && \

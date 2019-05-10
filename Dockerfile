@@ -49,7 +49,7 @@ RUN cd /tmp && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 RUN cd /opt && \
-    wget https://repo.lentiq.com/bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
+    wget --no-check-certificate https://repo.lentiq.com/bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
     tar -xzvf bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
     rm -rf /opt/bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
     cd /opt/bigstepdatalake-$BDLCL_VERSION/lib/ && \

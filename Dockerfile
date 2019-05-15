@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 ADD entrypoint.sh /
 
 ENV SPARK_VERSION 2.4.1
-ENV BDLCL_VERSION 0.11.3
+ENV BDLCL_VERSION 0.12.1
 
 # Install Java 8
 ENV JAVA_HOME /usr

@@ -285,6 +285,11 @@ ln -s /usr/local/bin/python3.6 /usr/bin/python
 rm -rf /opt/bigstepdatalake-$BDLCL_VERSION/conf/core-site.xml
 cp /opt/spark-$SPARK_VERSION-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatalake-$BDLCL_VERSION/conf/
 
+mkdir /root/.ivy2
+mkdir /root/.ivy2/jars
+touch /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
+cp $SPARK_HOME/jars/zookeeper-3.4.6.jar /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
+
 mkdir /tmp/hive 
 chmod -R 777 /tmp/hive
 

@@ -29,24 +29,23 @@ RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-$SPARK_VERSION/s
    
 # Spark pointers for Jupyter Notebook
 ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-hadoop2.7
-ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/lib/R/library
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
 ENV PATH $PATH:/$SPARK_HOME/bin/
 
 # Fix guava dependencies for Google
-RUN wget http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar -O $SPARK_HOME/jars/guava-23.0.jar && \
-      rm $SPARK_HOME/jars/guava-14.0.1.jar
+#RUN wget http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar -O $SPARK_HOME/jars/guava-23.0.jar && \
+RUN rm $SPARK_HOME/jars/guava-14.0.1.jar
 
 #Install Scala Spark kernel
-ENV SBT_VERSION 0.13.11
-ENV SBT_HOME /usr/local/sbt
-ENV PATH ${PATH}:${SBT_HOME}/bin
+#ENV SBT_VERSION 0.13.11
+#ENV SBT_HOME /usr/local/sbt
+#ENV PATH ${PATH}:${SBT_HOME}/bin
     
-RUN cd /tmp && \
-    wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" -O /tmp/sbt-0.13.11.tgz && \
-    tar -xvf /tmp/sbt-0.13.11.tgz -C /usr/local && \
-    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
+#RUN cd /tmp && \
+#    wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" -O /tmp/sbt-0.13.11.tgz && \
+#    tar -xvf /tmp/sbt-0.13.11.tgz -C /usr/local && \
+#    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 RUN cd /opt && \
     wget --no-check-certificate https://repo.lentiq.com/bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \
@@ -60,11 +59,11 @@ RUN cd /opt && \
     bash  ~/.bashrc
     
 #Add Thrift and Metadata support
-RUN cd $SPARK_HOME/jars/ && \
-   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql && \
-   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql && \
-   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql && \
-   wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P $SPARK_HOME/jars/ && \
+#RUN cd $SPARK_HOME/jars/ && \
+#   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql && \
+#   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql && \
+#   wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql && \
+RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P $SPARK_HOME/jars/ && \
    add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && \
    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
    apt-get install -y postgresql-client 
@@ -91,7 +90,7 @@ ADD core-site.xml.apiKey $SPARK_HOME/conf/
 ADD spark-defaults.conf $SPARK_HOME/conf/
 ADD hive-site.xml $SPARK_HOME/conf/
 ADD log4j2.xml.default $SPARK_HOME/conf/
-ADD log4j2.xml.audit $SPARK_HOME/conf/
+#ADD log4j2.xml.audit $SPARK_HOME/conf/
 
 RUN chmod 777 /entrypoint.sh
 

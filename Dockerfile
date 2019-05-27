@@ -10,7 +10,7 @@ ENV JAVA_HOME /usr
 ENV PATH $PATH:/usr/bin:/usr/lib:/etc/alternatives:/var/lib/dpkg/alternatives
 
 RUN apt-get -qq update -y
-RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git gcc make zlib1g-dev openjdk-8-jre libssl-dev
+RUN apt-get install -y unzip wget curl tar bzip2 software-properties-common git gcc make zlib1g-dev openjdk-8-jre libssl-dev vim
 
 RUN echo 'export JAVA_HOME="/usr"' >> ~/.bashrc && \
     echo 'export PATH="$PATH:/usr/bin:/usr/lib"' >> ~/.bashrc && \

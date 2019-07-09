@@ -11,7 +11,6 @@ echo 'export PATH="$PATH:/usr/bin:/usr/lib/jvm/java-8-openjdk-amd64/jre/bin"' >>
 echo 'export PATH=$BDL_HOME/bin:$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin' >> ~/.bashrc
 echo 'export HADOOP_CONF_DIR="$SPARK_HOME/conf"' >> ~/.bashrc
 echo 'export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"' >> ~/.bashrc
-echo 'export CLASSPATH=$SPARK_HOME/jars/:/opt/gcs-connector-latest-hadoop2.jar' >> ~/.bashrc
 echo 'export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"' >> ~/.bashrc
 echo 'alias python=python3.6' >> ~/.bashrc
 source ~/.bashrc
@@ -122,30 +121,6 @@ if [ "$AUTH_METHOD" == "apikey" ]; then
 		mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
 	fi
 	cp $SPARK_HOME/conf/core-site.xml $BDL_HOME/conf/
-fi
-
-#Configure log4j2.xml and core-site.xml based on the audit configuration
-
-if [ "$AUDIT_ENABLED" == "true" ]; then
-	mv $SPARK_HOME/conf/log4j2.xml.audit $SPARK_HOME/conf/log4j2.xml
-	if [ "$AUDIT_ELASTICSEARCH_URL" != "" ]; then
-		sed "s/AUDIT_ELASTICSEARCH_URL/${AUDIT_ELASTICSEARCH_URL//\//\\/}/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
-		mv $SPARK_HOME/conf/log4j2.xml.tmp $SPARK_HOME/conf/log4j2.xml
-	fi
-
-	sed "s/AUDIT_ELASTICSEARCH_AUTH_TOKEN/${AUDIT_ELASTICSEARCH_AUTH_TOKEN//\//\\/}/" $SPARK_HOME/conf/log4j2.xml >> $SPARK_HOME/conf/log4j2.xml.tmp && \
-	mv $SPARK_HOME/conf/log4j2.xml.tmp $SPARK_HOME/conf/log4j2.xml
-
-	sed "s/AUDIT_ENABLE/true/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-
-	sed "s/AUDIT_MOCK_USERID/$AUDIT_MOCK_USERID/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-else
-	sed "s/AUDIT_ENABLE/false/" $SPARK_HOME/conf/core-site.xml >> $SPARK_HOME/conf/core-site.xml.tmp && \
-	mv $SPARK_HOME/conf/core-site.xml.tmp $SPARK_HOME/conf/core-site.xml
-
-	mv $SPARK_HOME/conf/log4j2.xml.default $SPARK_HOME/conf/log4j2.xml
 fi
 
 if [ "$LOCAL_DIR" != "" ]; then
@@ -273,9 +248,6 @@ if [ "$DB_TYPE" == "postgresql" ]; then
 	cd $SPARK_HOME/jars
 
 	export PGPASSWORD=$DB_PASSWORD
-
-	psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $DB_USER -d $DB_NAME -f $SPARK_HOME/jars/hive-schema-1.2.0.postgres.sql
-
 fi
 
 #Fix python not found file/directory issues
@@ -284,6 +256,11 @@ ln -s /usr/local/bin/python3.6 /usr/bin/python
 
 rm -rf /opt/bigstepdatalake-$BDLCL_VERSION/conf/core-site.xml
 cp /opt/spark-$SPARK_VERSION-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatalake-$BDLCL_VERSION/conf/
+
+mkdir /root/.ivy2
+mkdir /root/.ivy2/jars
+touch /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
+cp $SPARK_HOME/jars/zookeeper-3.4.6.jar /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
 
 mkdir /tmp/hive 
 chmod -R 777 /tmp/hive

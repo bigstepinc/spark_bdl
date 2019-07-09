@@ -42,4 +42,8 @@
         <name>hive.exec.scratchdir</name>
         <value>file:///tmp/hive/</value>
   </property>
+  <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>/spark-warehouse</value>
+</property>
 </configuration>

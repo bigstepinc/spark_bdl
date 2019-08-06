@@ -259,8 +259,13 @@ cp /opt/spark-$SPARK_VERSION-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatala
 
 mkdir /root/.ivy2
 mkdir /root/.ivy2/jars
+mkdir /root/.ivy2/cache
 touch /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
 cp $SPARK_HOME/jars/zookeeper-3.4.6.jar /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
+cp $SPARK_HOME/jars/bdl* /root/.ivy2/jars/
+cp $SPARK_HOME/jars/bdl* /root/.ivy2/cache/
+
+/opt/bigstepdatalake-$BDLCL_VERSION/bin/bdl -mkdir /spark-warehouse
 
 mkdir /tmp/hive 
 chmod -R 777 /tmp/hive

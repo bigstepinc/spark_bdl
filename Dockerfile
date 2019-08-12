@@ -45,7 +45,8 @@ RUN cd /opt && \
     cp /opt/bigstepdatalake-$BDLCL_VERSION/lib/* $SPARK_HOME/jars/ && \
     export PATH=/opt/bigstepdatalake-$BDLCL_VERSION/bin:$PATH && \
     echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/bigstepdatalake-$BDLCL_VERSION/lib/:$SPARK_HOME/jars/' >> ~/.bashrc && \
-    bash  ~/.bashrc
+    bash  ~/.bashrc && \
+    apt-get autoclean
     
 #Add Thrift and Metadata support
 RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P $SPARK_HOME/jars/ && \

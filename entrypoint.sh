@@ -13,6 +13,7 @@ echo 'export HADOOP_CONF_DIR="$SPARK_HOME/conf"' >> ~/.bashrc
 echo 'export JAVA_OPTS="-Dsun.security.krb5.debug=true -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256M"' >> ~/.bashrc
 echo 'export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-XX:MetaspaceSize=128M --driver-java-options=-XX:MaxMetaspaceSize=256M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files $SPARK_HOME/conf/hive-site.xml"' >> ~/.bashrc
 echo 'alias python=python3.6' >> ~/.bashrc
+echo 'export PYTHONIOENCODING=utf8' >> ~/.bashrc
 source ~/.bashrc
 
 echo Using SPARK_HOME=$SPARK_HOME

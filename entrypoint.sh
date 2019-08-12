@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'export SPARK_VERSION=2.4.1' >> ~/.bashrc
-echo 'export BDLCL_VERSION=0.13.0-test' >> ~/.bashrc
+echo 'export BDLCL_VERSION=0.13.2-test' >> ~/.bashrc
 echo 'export SPARK_HOME="/opt/spark-$SPARK_VERSION-bin-hadoop2.7"'>> ~/.bashrc
 echo 'export BDL_HOME=/opt/bigstepdatalake-$BDLCL_VERSION' >> ~/.bashrc
                                                                                                                            
@@ -269,6 +269,13 @@ cp $SPARK_HOME/jars/bdl* /root/.ivy2/cache/
 
 mkdir /tmp/hive 
 chmod -R 777 /tmp/hive
+
+#this should be removed when we are going to use Spark without a Hadoop dependencies in the build process
+rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-annotations-2.7.3.jar && \
+rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-auth-2.7.3.jar && \
+rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-client-2.7.3.jar && \
+rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-common-2.7.3.jar  && \
+rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-hdfs-2.7.3.jar 
 
 if [ "$MODE" == "" ]; then
 MODE=$1

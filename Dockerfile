@@ -23,12 +23,13 @@ RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /usr/lib/jvm/java-8-openjdk-a
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.4.1
-RUN cd /opt && wget https://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.7.tgz && \
-   tar xzvf /opt/spark-$SPARK_VERSION-bin-hadoop2.7.tgz && \
-   rm  /opt/spark-$SPARK_VERSION-bin-hadoop2.7.tgz
-   
+RUN cd /opt && \
+    wget https://repo.lentiq.com/spark-$SPARK_VERSION-bin-hadoop2.9.2.tgz && \
+    tar xzvf /opt/spark-$SPARK_VERSION-bin-hadoop2.9.2.tgz && \
+    rm  /opt/spark-$SPARK_VERSION-bin-hadoop2.9.2.tgz
+
 # Spark pointers for Jupyter Notebook
-ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-hadoop2.7
+ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-hadoop2.9.2
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
 ENV PATH $PATH:/$SPARK_HOME/bin/

@@ -2,7 +2,7 @@
 
 echo 'export SPARK_VERSION=2.4.1' >> ~/.bashrc
 echo 'export BDLCL_VERSION=0.13.2-test' >> ~/.bashrc
-echo 'export SPARK_HOME="/opt/spark-$SPARK_VERSION-bin-hadoop2.7"'>> ~/.bashrc
+echo 'export SPARK_HOME="/opt/spark-$SPARK_VERSION-bin-hadoop2.9.2"'>> ~/.bashrc
 echo 'export BDL_HOME=/opt/bigstepdatalake-$BDLCL_VERSION' >> ~/.bashrc
                                                                                                                            
 echo 'export JAVA_HOME="/usr"' >> ~/.bashrc                                                                                                                            
@@ -256,15 +256,15 @@ rm -rf /usr/bin/python
 ln -s /usr/local/bin/python3.6 /usr/bin/python
 
 rm -rf /opt/bigstepdatalake-$BDLCL_VERSION/conf/core-site.xml
-cp /opt/spark-$SPARK_VERSION-bin-hadoop2.7/conf/core-site.xml /opt/bigstepdatalake-$BDLCL_VERSION/conf/
+cp /opt/spark-$SPARK_VERSION-bin-hadoop2.9.2/conf/core-site.xml /opt/bigstepdatalake-$BDLCL_VERSION/conf/
 
 mkdir /root/.ivy2
 mkdir /root/.ivy2/jars
 mkdir /root/.ivy2/cache
 touch /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
-cp $SPARK_HOME/jars/zookeeper-3.4.6.jar /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
-cp $SPARK_HOME/jars/bdl* /root/.ivy2/jars/
-cp $SPARK_HOME/jars/bdl* /root/.ivy2/cache/
+#cp $SPARK_HOME/jars/zookeeper-3.4.6.jar /root/.ivy2/jars/org.apache.zookeeper_zookeeper-3.4.6.jar
+#cp $SPARK_HOME/jars/bdl* /root/.ivy2/jars/
+#cp $SPARK_HOME/jars/bdl* /root/.ivy2/cache/#
 
 /opt/bigstepdatalake-$BDLCL_VERSION/bin/bdl -mkdir /spark-warehouse
 
@@ -272,11 +272,11 @@ mkdir /tmp/hive
 chmod -R 777 /tmp/hive
 
 #this should be removed when we are going to use Spark without a Hadoop dependencies in the build process
-rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-annotations-2.7.3.jar && \
-rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-auth-2.7.3.jar && \
-rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-client-2.7.3.jar && \
-rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-common-2.7.3.jar  && \
-rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-hdfs-2.7.3.jar 
+#rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-annotations-2.7.3.jar && \
+#rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-auth-2.7.3.jar && \
+#rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-client-2.7.3.jar && \
+#rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-common-2.7.3.jar  && \
+#rm /opt/spark-2.4.1-bin-hadoop2.7/jars/hadoop-hdfs-2.7.3.jar 
 
 if [ "$MODE" == "" ]; then
 MODE=$1

@@ -2,7 +2,7 @@
 
 echo 'export SPARK_VERSION=2.4.1' >> ~/.bashrc
 echo 'export BDLCL_VERSION=0.13.2-test' >> ~/.bashrc
-echo 'export SPARK_HOME="/opt/spark-$SPARK_VERSION-bin-hadoop2.9.2"'>> ~/.bashrc
+echo 'export SPARK_HOME="/opt/spark-$SPARK_VERSION-bin-custom-spark"'>> ~/.bashrc
 echo 'export BDL_HOME=/opt/bigstepdatalake-$BDLCL_VERSION' >> ~/.bashrc
                                                                                                                            
 echo 'export JAVA_HOME="/usr"' >> ~/.bashrc                                                                                                                            
@@ -256,7 +256,7 @@ rm -rf /usr/bin/python
 ln -s /usr/local/bin/python3.6 /usr/bin/python
 
 rm -rf /opt/bigstepdatalake-$BDLCL_VERSION/conf/core-site.xml
-cp /opt/spark-$SPARK_VERSION-bin-hadoop2.9.2/conf/core-site.xml /opt/bigstepdatalake-$BDLCL_VERSION/conf/
+cp $SPARK_HOME/conf/core-site.xml /opt/bigstepdatalake-$BDLCL_VERSION/conf/
 
 mkdir /root/.ivy2
 mkdir /root/.ivy2/jars

@@ -29,7 +29,7 @@ RUN cd /opt && \
     rm  /opt/spark-$SPARK_VERSION-bin-hadoop2.9.2.tgz
 
 # Spark pointers for Jupyter Notebook
-ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-hadoop2.9.2
+ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-custom-spark
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
 ENV PATH $PATH:/$SPARK_HOME/bin/

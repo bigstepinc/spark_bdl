@@ -28,7 +28,7 @@ RUN cd /opt &&  wget https://repo.lentiq.com/spark-2.4.1-bin-custom-hadoop2.9.2.
     rm  /opt/spark-$SPARK_VERSION-bin-custom-hadoop2.9.2.tgz
 
 # Spark pointers for Jupyter Notebook
-ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-custom-spark
+ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-custom-hadoop2.9.2
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
 ENV PATH $PATH:/$SPARK_HOME/bin/

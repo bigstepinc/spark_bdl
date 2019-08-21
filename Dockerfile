@@ -34,7 +34,7 @@ ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 ENV PATH $PATH:/$SPARK_HOME/bin/
 
 # Fix guava dependencies for Google
-#RUN rm $SPARK_HOME/jars/guava-14.0.1.jar
+RUN rm $SPARK_HOME/jars/guava-14.0.1.jar
 
 RUN cd /opt && \
     wget --no-check-certificate https://repo.lentiq.com/bigstepdatalake-$BDLCL_VERSION-bin.tar.gz && \

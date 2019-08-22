@@ -3,7 +3,8 @@ FROM ubuntu:16.04
 ADD entrypoint.sh /
 
 ENV SPARK_VERSION 2.4.1
-ENV BDLCL_VERSION 0.13.2-test
+ENV BDLCL_VERSION 0.13.3
+ENV HADOOP_VERSION 2.9.2
 
 # Install Java 8
 ENV JAVA_HOME /usr
@@ -23,12 +24,12 @@ RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /usr/lib/jvm/java-8-openjdk-a
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Install Spark 2.4.1
-RUN cd /opt &&  wget https://repo.lentiq.com/spark-2.4.1-bin-custom-hadoop2.9.2.tgz && \
-    tar xzvf /opt/spark-$SPARK_VERSION-bin-custom-hadoop2.9.2.tgz && \
-    rm  /opt/spark-$SPARK_VERSION-bin-custom-hadoop2.9.2.tgz
+RUN cd /opt &&  wget https://repo.lentiq.com/spark-$SPARK_VERSION-bin-custom-hadoop$HADOOP_VERSION.tgz && \
+    tar xzvf /opt/spark-$SPARK_VERSION-bin-custom-hadoop$HADOOP_VERSION.tgz && \
+    rm  /opt/spark-$SPARK_VERSION-bin-custom-hadoop$HADOOP_VERSION.tgz
 
 # Spark pointers for Jupyter Notebook
-ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-custom-hadoop2.9.2
+ENV SPARK_HOME /opt/spark-$SPARK_VERSION-bin-custom-hadoop$HADOOP_VERSION
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
 ENV PATH $PATH:/$SPARK_HOME/bin/
